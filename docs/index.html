@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChatVoice ดาวน์โหลด</title>
+<meta name="description" content="ChatVoice อ่านแชทไลฟ์ VIBIE ออกเสียงภาษาไทย ดาวน์โหลดสำหรับ Windows ฟรี">
+<meta name="theme-color" content="#0b1020">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1.5' y='1.5' width='29' height='29' rx='8' fill='%230b1020' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M9 13h2v6H9zm4-4h2v14h-2zm4 3h2v8h-2zm4-2h2v12h-2z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #0b1020; --bg-hi: #10172b; --raise: #1b2338; --line: rgba(255, 255, 255, .08); --line-hi: rgba(255, 255, 255, .14);
+    --surf: rgba(255, 255, 255, .03); --surf2: rgba(255, 255, 255, .05);
+    --ink: #ebedf3; --ink2: rgba(255, 255, 255, .72); --mute: rgba(255, 255, 255, .45); --faint: rgba(255, 255, 255, .28);
+    --green: #3ddc97; --blue: #5aa9ff; --violet: #a78bfa; --amber: #f5b14c; --pink: #f472b6; --cyan: #38d6e8;
+    --font: "Helvetica Neue", Helvetica, Arial, "IBM Plex Sans Thai", "Leelawadee UI", "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--font); overflow-x: hidden;
+         padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+  .ico { width: 14px; height: 14px; flex: none; }
+
+  /* top bar */
+  .top { position: sticky; top: 0; z-index: 10; background: rgba(11, 16, 32, .86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+         border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
+  .top .wrap { display: flex; align-items: center; gap: 28px; height: 52px; }
+  .logo { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 13px; letter-spacing: .04em; text-decoration: none; }
+  .logo b { border: 2px solid #fff; border-radius: 999px; padding: 1px 8px; font-size: 12px; letter-spacing: .02em; }
+  .links { display: flex; gap: 24px; font-size: 14px; }
+  .links a { text-decoration: none; color: var(--mute); }
+  .links a:hover { color: var(--ink); }
+  .links a:first-child { color: var(--ink); }
+  .spacer { flex: 1; }
+  .seg { display: flex; background: var(--surf2); border-radius: 7px; padding: 2px; }
+  .seg button { all: unset; cursor: pointer; font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: 5px; color: var(--mute); }
+  .seg button[aria-pressed="true"] { background: var(--raise); color: var(--ink); }
+  .seg button:focus-visible { outline: 2px solid var(--blue); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font: 500 13.5px/1 var(--font); border-radius: 7px; padding: 9px 14px; white-space: nowrap;
+         background: var(--surf2); color: var(--ink); border: 1px solid var(--line); transition: background .15s; }
+  .btn:hover { background: rgba(255, 255, 255, .09); }
+  .btn.white { background: #ebedf3; color: #0b1020; border-color: #ebedf3; }
+  .btn.white:hover { background: #fff; }
+  .btn.big { font-size: 15px; padding: 13px 20px; border-radius: 8px; }
+
+  /* announcement strip */
+  .strip { border-bottom: 1px solid var(--line); background:
+           radial-gradient(circle, rgba(90, 169, 255, .35) 1px, transparent 1.5px) 0 0 / 14px 14px, linear-gradient(90deg, #0b1020, #101a35 50%, #0b1020); }
+  .strip .wrap { display: flex; align-items: center; justify-content: center; gap: 12px; height: 36px; font-size: 13px; }
+  .strip .tag { font-size: 10px; font-weight: 700; letter-spacing: .06em; background: var(--blue); color: #061021; padding: 2px 6px; border-radius: 4px; }
+  .strip a { background: #fff; color: #0b1020; text-decoration: none; font-weight: 600; font-size: 12px; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .strip span.t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+
+  /* hero */
+  .hero { padding-block: 56px 36px; }
+  h1 { font-size: 26px; font-weight: 500; margin: 0 0 10px; letter-spacing: -.01em; line-height: 1.3; text-wrap: balance; }
+  h1 span { color: var(--mute); }
+  .lede { color: var(--ink2); margin: 0 0 24px; max-width: 46em; font-size: 15px; }
+  .lede a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .meta { margin-top: 12px; font-size: 12.5px; color: var(--mute); display: flex; flex-wrap: wrap; gap: 2px 10px; font-variant-numeric: tabular-nums; }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  /* stats row */
+  .stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; padding-block: 36px 40px; }
+  .stat { min-width: 0; }
+  .stat .k { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stat .v { font-size: 16px; margin-top: 6px; }
+  .stat .u { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+
+  /* step cards */
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-bottom: 48px; align-items: start; }
+  .card { display: flex; gap: 16px; align-items: flex-start; background: var(--surf); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; min-width: 0; }
+  .card .sq { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+  .card .sq .ico { width: 18px; height: 18px; }
+  .card h3 { font-size: 15.5px; font-weight: 500; margin: 2px 0 4px; }
+  .card p { margin: 0; color: var(--mute); font-size: 13.5px; }
+  .card .num { color: var(--faint); font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .smart { margin-top: 14px; border-radius: 8px; background: #0f5fa8; color: #fff; padding: 10px 12px; font: 11.5px/1.4 "Segoe UI", var(--font); }
+  .smart b { display: block; font-size: 13px; margin-bottom: 2px; }
+  .smart u { text-decoration: none; background: rgba(255, 255, 255, .95); color: #0f5fa8; padding: 0 4px; border-radius: 3px; font-weight: 600; }
+  .smart .btns { display: flex; justify-content: flex-end; gap: 6px; margin-top: 8px; }
+  .smart .btns span { border: 1px solid rgba(255, 255, 255, .7); padding: 2px 10px; }
+  .smart .btns .go { background: #fff; color: #0f5fa8; font-weight: 600; }
+
+  hr.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+  /* panel with tabs, table style */
+  .panel { margin-block: 48px; border: 1px solid var(--line); border-radius: 14px; background: var(--surf); overflow: hidden; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .tabs { display: flex; gap: 2px; background: var(--surf2); border-radius: 10px; padding: 4px; overflow-x: auto; max-width: 100%; }
+  .tabs button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 7px; font-size: 14px; color: var(--mute); white-space: nowrap; }
+  .tabs button[aria-selected="true"] { background: var(--raise); color: var(--ink); }
+  .tabs button:focus-visible { outline: 2px solid var(--blue); }
+  .live { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--mute); padding-right: 6px; }
+  .live i { width: 7px; height: 7px; border-radius: 50%; background: #ff4d6d; box-shadow: 0 0 8px #ff4d6d; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); padding: 14px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 13px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  td.n { color: var(--mute); width: 56px; }
+  td .sub { display: block; font-size: 12px; color: var(--mute); }
+  td.msg { white-space: normal; min-width: 180px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: .03em; padding: 3px 7px; border-radius: 5px; }
+  .chip.read { background: rgba(61, 220, 151, .14); color: var(--green); }
+  .chip.done { background: rgba(255, 255, 255, .06); color: var(--mute); }
+  .chip.wait { background: rgba(245, 177, 76, .14); color: var(--amber); }
+  .chip.new { background: var(--green); color: #052016; font-size: 10px; padding: 2px 6px; border-radius: 999px; }
+  .chip.off { background: rgba(167, 139, 250, .14); color: var(--violet); }
+  .wave { display: inline-flex; align-items: center; gap: 2px; height: 11px; }
+  .wave span { width: 2px; height: 30%; background: currentColor; border-radius: 1px; animation: bar .9s ease-in-out infinite; }
+  .wave span:nth-child(2) { animation-delay: -.3s } .wave span:nth-child(3) { animation-delay: -.6s } .wave span:nth-child(4) { animation-delay: -.15s }
+  @keyframes bar { 50% { height: 100%; } }
+  #chatRows tr { animation: rowin .5s ease-out both; }
+  @keyframes rowin { from { opacity: 0; transform: translateY(-6px); } }
+  :lang(th) th, :lang(th) .eyebrow { letter-spacing: 0; font-size: 12px; }
+  td .who-sm { display: none; }
+  .yes { color: var(--green); } .no { color: var(--faint); }
+  .panel-foot { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; font-size: 12.5px; color: var(--mute); border-top: 1px solid var(--line); flex-wrap: wrap; }
+
+  /* recent releases */
+  .sec { padding-block: 56px 24px; }
+  .eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); margin: 0 0 8px; }
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .sec h2 { font-size: 26px; font-weight: 400; margin: 0 0 4px; letter-spacing: -.01em; }
+  .sec-head p { margin: 0; color: var(--mute); }
+  .sec-head a { color: var(--ink2); text-decoration: none; font-size: 13.5px; }
+  .rels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .rel { border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; background: var(--surf); min-width: 0; text-decoration: none; display: block; transition: border-color .15s; }
+  .rel:hover { border-color: var(--line-hi); }
+  .rel .h { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+  .rel .d { font-size: 12.5px; color: var(--mute); margin: 2px 0 10px; }
+  .rel p { margin: 0; color: var(--ink2); font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .rel.skel { min-height: 130px; }
+
+  /* requirements and fine print */
+  .fine { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; padding-block: 24px 56px; }
+  .fine .box { border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; background: var(--surf); min-width: 0; }
+  .fine h3 { font-size: 14px; font-weight: 500; margin: 0 0 8px; }
+  .fine ul { margin: 0; padding-left: 18px; color: var(--ink2); font-size: 13.5px; }
+  .fine li { margin: 3px 0; }
+  .fine .hash { margin-top: 10px; font: 11.5px/1.5 ui-monospace, Consolas, monospace; color: var(--mute); overflow-wrap: anywhere; }
+  footer { border-top: 1px solid var(--line); padding-block: 22px 32px; color: var(--mute); font-size: 12.5px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 1000px) {
+    .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .links { display: none; }
+  }
+  @media (max-width: 820px) {
+    .cards, .rels, .fine { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .top .btn.white { display: none; }
+    .ctas .btn { flex: 1 1 100%; justify-content: center; }
+    .hero { padding-block: 32px 20px; }
+    h1 { font-size: 22px; }
+    .strip .wrap { justify-content: space-between; }
+    .tabs button { padding: 8px 10px; }
+    .hide-sm { display: none; }
+    #tab-chat th:nth-child(-n+2), #tab-chat td:nth-child(-n+2) { display: none; }
+    td .who-sm { display: block; }
+    td.msg { min-width: 0; }
+    th, td { padding-left: 12px; padding-right: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wave" viewBox="0 0 16 16"><path d="M2 6.5v3M5 4v8M8 2.5v11M11 4.5v7M14 6.5v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 16 16"><path d="M2 2h6l6 6-6 6-6-6z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/><circle cx="5.5" cy="5.5" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-box" viewBox="0 0 16 16"><path d="M2 5l6-3 6 3v6l-6 3-6-3z M2 5l6 3 6-3 M8 8v6" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 16 16"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M3 8a5 5 0 0 0 10 0M8 13v2" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 16 16"><path d="M13.5 6A5.5 5.5 0 0 0 3 5M2.5 10A5.5 5.5 0 0 0 13 11M3 2v3h3M13 14v-3h-3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 16 16"><rect x="2" y="6" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M1.5 6h13M8 6v8M8 6C6 2 3.5 3 5 5.5M8 6c2-4 4.5-3 3-.5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-win" viewBox="0 0 24 24"><path d="M3 4.5 10.5 3.4v8.1H3zm0 15 7.5 1.1v-8H3zM11.5 3.3 21 2v9.5h-9.5zm0 17.4L21 22v-9.5h-9.5z" fill="currentColor"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M2.5 13.5h11" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 16 16"><path d="M8 1.5 13.5 3.5v4.2c0 3.2-2.3 5.6-5.5 6.8-3.2-1.2-5.5-3.6-5.5-6.8V3.5z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/><path d="M5.5 8l1.8 1.8L10.8 6.3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M6.5 5.5v5l4-2.5z" fill="currentColor"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 16 16"><path d="M2.5 3.5h11v7.5h-6l-3 2.5V11h-2z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="top">
+  <div class="wrap">
+    <a class="logo" href="./"><b>CHAT</b>VOICE</a>
+    <nav class="links">
+      <a href="#download" data-t="navDl"></a>
+      <a href="#install" data-t="navInstall"></a>
+      <a href="#voices" data-t="navVoices"></a>
+      <a href="#new" data-t="navNew"></a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="seg" role="group" aria-label="Language">
+      <button type="button" data-lang="th" aria-pressed="true">TH</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn white dl" href="https://github.com/FireH2O/ChatVoice-releases/releases/latest" data-t="navDl"></a>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="wrap">
+    <span class="tag">NEW</span>
+    <span class="t" id="stripText" data-t="strip"></span>
+    <a href="#new" data-t="stripBtn"></a>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="hero" id="download">
+    <h1 data-t="h1"></h1>
+    <p class="lede" data-t="lede"></p>
+    <div class="ctas">
+      <a class="btn white big dl" id="dl" href="https://github.com/FireH2O/ChatVoice-releases/releases/latest">
+        <svg class="ico" style="width:16px;height:16px"><use href="#i-win"/></svg><span data-t="dl"></span>
+      </a>
+      <a class="btn big" href="#install"><span data-t="howBtn"></span><svg class="ico"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="meta" id="meta" aria-live="polite"><span data-t="loading"></span></div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="k"><svg class="ico" style="color:var(--violet)"><use href="#i-tag"/></svg><span data-t="kVer"></span></div>
+      <div class="v" id="sVer">—</div><div class="u" id="sDate">&nbsp;</div></div>
+    <div class="stat"><div class="k"><svg class="ico" style="color:var(--green)"><use href="#i-box"/></svg><span data-t="kSize"></span></div>
+      <div class="v" id="sSize">—</div><div class="u" data-t="uSize"></div></div>
+    <div class="stat"><div class="k"><svg class="ico" style="color:var(--amber)"><use href="#i-mic"/></svg><span data-t="kVoices"></span></div>
+      <div class="v">4</div><div class="u" data-t="uVoices"></div></div>
+    <div class="stat"><div class="k"><svg class="ico" style="color:var(--pink)"><use href="#i-sync"/></svg><span data-t="kUpd"></span></div>
+      <div class="v" data-t="vUpd"></div><div class="u" data-t="uUpd"></div></div>
+    <div class="stat"><div class="k"><svg class="ico" style="color:var(--cyan)"><use href="#i-win"/></svg><span data-t="kWin"></span></div>
+      <div class="v">10 / 11</div><div class="u" data-t="uWin"></div></div>
+    <div class="stat"><div class="k"><svg class="ico" style="color:var(--blue)"><use href="#i-gift"/></svg><span data-t="kPrice"></span></div>
+      <div class="v" data-t="vPrice"></div><div class="u" data-t="uPrice"></div></div>
+  </div>
+
+  <div class="cards" id="install">
+    <div class="card">
+      <div class="sq" style="background:rgba(61,220,151,.12);color:var(--green)"><svg class="ico"><use href="#i-down"/></svg></div>
+      <div><h3><span class="num">1</span><span data-t="s1h"></span></h3><p data-t="s1p"></p></div>
+    </div>
+    <div class="card">
+      <div class="sq" style="background:rgba(90,169,255,.12);color:var(--blue)"><svg class="ico"><use href="#i-shield"/></svg></div>
+      <div style="min-width:0"><h3><span class="num">2</span><span data-t="s2h"></span></h3><p data-t="s2p"></p>
+        <div class="smart" aria-hidden="true">
+          <b>Windows protected your PC</b>
+          Microsoft Defender SmartScreen prevented an unrecognized app from starting. <u>More info</u>
+          <div class="btns"><span class="go">Run anyway</span><span>Don't run</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sq" style="background:rgba(244,114,182,.12);color:var(--pink)"><svg class="ico"><use href="#i-play"/></svg></div>
+      <div><h3><span class="num">3</span><span data-t="s3h"></span></h3><p data-t="s3p"></p></div>
+    </div>
+  </div>
+</main>
+
+<hr class="rule">
+
+<div class="wrap">
+  <div class="panel" id="voices">
+    <div class="panel-head">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" aria-selected="true" data-tab="chat"><svg class="ico"><use href="#i-chat"/></svg><span data-t="tabChat"></span></button>
+        <button type="button" role="tab" aria-selected="false" data-tab="voice"><svg class="ico"><use href="#i-mic"/></svg><span data-t="tabVoice"></span></button>
+      </div>
+      <span class="live" id="liveTag"><i></i><span data-t="liveDemo"></span></span>
+    </div>
+    <div class="scroll" id="tab-chat">
+      <table>
+        <thead><tr><th>#</th><th data-t="thViewer"></th><th data-t="thMsg"></th><th data-t="thStatus"></th></tr></thead>
+        <tbody id="chatRows"></tbody>
+      </table>
+    </div>
+    <div class="scroll" id="tab-voice" hidden>
+      <table>
+        <thead><tr><th data-t="thOrder"></th><th data-t="thVoice"></th><th data-t="thType"></th><th data-t="thOffline"></th><th data-t="thSpeed"></th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td>Premwadee <span class="sub" data-t="vFemale"></span></td><td>Microsoft</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td class="n">2</td><td>Niwat <span class="sub" data-t="vMale"></span></td><td>Microsoft</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td class="n">3</td><td><span data-t="vGoogle"></span> <span class="chip new">NEW</span><span class="sub" data-t="vFemale"></span></td><td>Google</td><td class="no">—</td><td class="no">—</td></tr>
+          <tr><td class="n">4</td><td>Pattara <span class="chip new">NEW</span><span class="sub" data-t="vMale"></span></td><td>Windows</td><td><span class="chip off" data-t="offline"></span></td><td class="no">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-foot"><span id="panelNote" data-t="noteChat"></span><span class="hide-sm" data-t="noteName"></span></div>
+  </div>
+</div>
+
+<hr class="rule">
+
+<section class="sec wrap" id="new">
+  <div class="sec-head">
+    <div><p class="eyebrow" data-t="recent"></p><h2 data-t="newH"></h2><p data-t="newP"></p></div>
+    <a href="https://github.com/FireH2O/ChatVoice-releases/releases"><span data-t="allVer"></span> →</a>
+  </div>
+  <div class="rels" id="rels">
+    <div class="rel skel"></div><div class="rel skel"></div><div class="rel skel"></div>
+  </div>
+</section>
+
+<div class="wrap fine">
+  <div class="box">
+    <h3 data-t="needH"></h3>
+    <ul><li data-t="n1"></li><li data-t="n2"></li><li data-t="n3"></li><li data-t="n4"></li></ul>
+  </div>
+  <div class="box">
+    <h3 data-t="goodH"></h3>
+    <ul><li data-t="f1"></li><li data-t="f2"></li><li data-t="f3"></li></ul>
+    <div class="hash" id="hash" hidden></div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap"><span>ChatVoice</span><span data-t="foot"></span></div>
+</footer>
+
+<script>
+(() => {
+  const REPO = "FireH2O/ChatVoice-releases";
+  const CHAT = ["สวัสดีครับทุกคน", "555 เก่งมากเลย", "เกมนี้ชื่ออะไรครับ", "ขอเพลงต่อไปด้วย 🎉", "ไปต่อเลย สู้ ๆ", "ภาพชัดมากวันนี้"];
+  const T = {
+    th: {
+      title: "ChatVoice ดาวน์โหลด",
+      navDl: "ดาวน์โหลด", navInstall: "วิธีติดตั้ง", navVoices: "เสียง", navNew: "มีอะไรใหม่",
+      strip: "เลือกเสียง Google หรือเสียง Windows เป็นเสียงหลักได้แล้ว", stripBtn: "ดูเพิ่ม ›",
+      h1: "ChatVoice <span>— อ่านแชทไลฟ์ VIBIE ออกเสียงภาษาไทย</span>",
+      lede: "ใครพิมพ์อะไรในแชท คุณและคนดูได้ยินทันที โดยไม่ต้องละสายตาจากเกม แอปเล็ก ๆ สำหรับ Windows ฟรี ไม่ต้องสมัครอะไร และ<a href=\"#install\">อัปเดตตัวเอง</a>ตอนคุณปิดแอป",
+      dl: "ดาวน์โหลดสำหรับ Windows", howBtn: "วิธีติดตั้ง",
+      loading: "กำลังดูเวอร์ชันล่าสุด…", free: "ฟรี",
+      kVer: "เวอร์ชันล่าสุด", kSize: "ขนาดไฟล์ติดตั้ง", uSize: "ไม่ต้องใช้แอดมิน", kVoices: "เสียงให้เลือก", uVoices: "Microsoft, Google, Windows",
+      kUpd: "การอัปเดต", vUpd: "อัตโนมัติ", uUpd: "ตอนปิดแอป ไม่ใช่ระหว่างไลฟ์", kWin: "Windows", uWin: "64 บิต",
+      kPrice: "ราคา", vPrice: "ฟรี", uPrice: "ไม่มีโฆษณา",
+      s1h: "เปิดไฟล์ติดตั้ง", s1p: "ดับเบิลคลิก ChatVoice-Setup ที่ดาวน์โหลดมา ติดตั้งให้ผู้ใช้คุณคนเดียว ไม่ต้องใช้สิทธิ์แอดมิน",
+      s2h: "ถ้า Windows เตือน", s2p: "ไฟล์ไม่ได้ซื้อใบรับรอง Windows เลยขึ้นจอสีฟ้า กด “More info” แล้วกด “Run anyway”",
+      s3h: "ใส่ลิงก์ไลฟ์แล้วกดเริ่ม", s3p: "เปิด ChatVoice วางลิงก์ไลฟ์ VIBIE ของคุณ แชทจะถูกอ่านออกเสียงทันที",
+      tabChat: "แชทสด", tabVoice: "เสียง", liveDemo: "ตัวอย่าง",
+      thViewer: "คนดู", thMsg: "ข้อความ", thStatus: "สถานะ", read: "กำลังอ่าน", done: "อ่านแล้ว", wait: "รอคิว",
+      thOrder: "ลำดับ", thVoice: "เสียง", thType: "จาก", thOffline: "ใช้ออฟไลน์", thSpeed: "ปรับความเร็ว",
+      vFemale: "หญิง", vMale: "ชาย", vGoogle: "เสียง Google", offline: "ออฟไลน์",
+      noteChat: "ChatVoice อ่านแชทตามลำดับ ทีละข้อความ", noteVoice: "เสียงที่คุณเลือกพูดก่อน ถ้ามีปัญหา เสียงถัดไปพูดแทนให้เอง", noteName: "ชื่อในตัวอย่างเป็นชื่อสมมติ",
+      recent: "ล่าสุด", newH: "มีอะไรใหม่", newP: "เวอร์ชันล่าสุดของ ChatVoice (บันทึกเป็นภาษาอังกฤษ)", allVer: "ทุกเวอร์ชัน",
+      needH: "ต้องมี",
+      n1: "Windows 10 หรือ 11 (64 บิต)", n2: "Chrome หรือ Edge ในเครื่อง",
+      n3: "WebView2 มีอยู่แล้วใน Windows 11 และ Windows 10 ที่อัปเดต", n4: "อินเทอร์เน็ต สำหรับเสียง Microsoft และ Google",
+      goodH: "ควรรู้",
+      f1: "ChatVoice ไม่ได้ทำโดยหรือเกี่ยวข้องกับ VIBIE แอปอ่านหน้าไลฟ์สาธารณะที่คนดูทุกคนเห็น",
+      f2: "เสียง Microsoft และ Google เป็นบริการฟรีที่ใช้แบบไม่เป็นทางการ อาจหยุดทำงานได้โดยไม่แจ้ง",
+      f3: "ทุกเวอร์ชันมีไฟล์ latest.json ที่เซ็นไว้ ChatVoice ตรวจก่อนติดตั้งอัปเดตทุกครั้ง",
+      hash: "SHA-256 ของไฟล์ติดตั้ง", foot: "แอปเล็ก ๆ ที่ทำให้เพื่อน ๆ สตรีมเมอร์ใช้",
+    },
+    en: {
+      title: "ChatVoice Download",
+      navDl: "Download", navInstall: "Install", navVoices: "Voices", navNew: "What's new",
+      strip: "Pick the Google or Windows voice as your main voice", stripBtn: "See more ›",
+      h1: "ChatVoice <span>— let your VIBIE live chat speak, in Thai</span>",
+      lede: "Whatever viewers type, you and your audience hear it right away, without looking away from the game. A small, free Windows app: no sign-up, and it <a href=\"#install\">updates itself</a> when you close it.",
+      dl: "Download for Windows", howBtn: "How to install",
+      loading: "Checking the newest version…", free: "Free",
+      kVer: "latest version", kSize: "installer size", uSize: "no admin needed", kVoices: "voices to pick", uVoices: "Microsoft, Google, Windows",
+      kUpd: "updates", vUpd: "Automatic", uUpd: "on close, never mid-live", kWin: "Windows", uWin: "64-bit",
+      kPrice: "price", vPrice: "Free", uPrice: "no ads",
+      s1h: "Run the installer", s1p: "Double-click the ChatVoice-Setup file you downloaded. It installs for your user only, no admin needed.",
+      s2h: "If Windows warns you", s2p: "The installer has no paid certificate, so Windows shows a blue box. Click “More info”, then “Run anyway”.",
+      s3h: "Paste your live link, press Start", s3p: "Open ChatVoice and paste your VIBIE live link. Chat is read aloud right away.",
+      tabChat: "Live chat", tabVoice: "Voices", liveDemo: "Example",
+      thViewer: "Viewer", thMsg: "Message", thStatus: "Status", read: "READING", done: "SPOKEN", wait: "QUEUED",
+      thOrder: "Order", thVoice: "Voice", thType: "By", thOffline: "Works offline", thSpeed: "Speed control",
+      vFemale: "female", vMale: "male", vGoogle: "Google voice", offline: "OFFLINE",
+      noteChat: "ChatVoice reads the chat in order, one message at a time.", noteVoice: "The voice you pick speaks first. If it fails, the next one takes over.", noteName: "Names in the example are made up.",
+      recent: "Recent", newH: "What's new", newP: "The latest ChatVoice versions.", allVer: "All versions",
+      needH: "You need",
+      n1: "Windows 10 or 11 (64-bit)", n2: "Chrome or Edge installed",
+      n3: "WebView2, built into Windows 11 and up-to-date Windows 10", n4: "Internet, for the Microsoft and Google voices",
+      goodH: "Good to know",
+      f1: "ChatVoice is not made by or affiliated with VIBIE. It reads the public viewer page of your live.",
+      f2: "The Microsoft and Google voices are free services used unofficially. They can stop working without notice.",
+      f3: "Every release has a signed latest.json. ChatVoice checks it before installing any update.",
+      hash: "Installer SHA-256", foot: "A small app made for streamer friends",
+    },
+  };
+
+  let lang = "th", rels = null, tab = "chat";
+  try { const s = localStorage.getItem("cv-lang"); if (s === "en" || s === "th") lang = s; } catch (e) {}
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const plain = s => s.replace(/\*\*(.+?)\*\*/g, "$1").replace(/`([^`]+)`/g, "$1");
+  const mb = n => (n / 1048576).toFixed(1) + " MB";
+  const date = iso => new Date(iso).toLocaleDateString(lang === "th" ? "th-TH" : "en-GB", { day: "numeric", month: "short", year: "numeric" });
+  const firstPoint = body => {
+    const b = (body || "").split(/\n\s*\nSHA-256/)[0].split("\n");
+    const bullet = b.find(l => /^\s*[-*] /.test(l));
+    return plain((bullet || b.find(l => l.trim()) || "").replace(/^\s*[-*] /, "").trim());
+  };
+
+  function render() {
+    const t = T[lang];
+    document.documentElement.lang = lang;
+    document.title = t.title;
+    document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t[el.dataset.t]; });
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    $("panelNote").textContent = tab === "chat" ? t.noteChat : t.noteVoice;
+    if (rels && rels.length) {
+      const r = rels[0], exe = r.exe;
+      $("meta").innerHTML = [`<b>v${esc(r.version)}</b>`, exe ? mb(exe.size) : "", date(r.date), t.free].filter(Boolean).join("<span>·</span>");
+      $("sVer").textContent = "v" + r.version;
+      $("sDate").textContent = date(r.date);
+      if (exe) $("sSize").textContent = mb(exe.size);
+      if (exe && exe.digest && exe.digest.startsWith("sha256:")) { $("hash").hidden = false; $("hash").textContent = t.hash + ": " + exe.digest.slice(7); }
+      $("rels").innerHTML = rels.slice(0, 3).map((x, k) =>
+        `<a class="rel" href="${esc(x.url)}"><div class="h">v${esc(x.version)}${k === 0 ? ' <span class="chip new">NEW</span>' : ""}</div>` +
+        `<div class="d">${esc(date(x.date))}</div><p>${esc(x.point)}</p></a>`).join("");
+    } else if (rels === false) {
+      $("meta").textContent = "";
+      $("rels").innerHTML = `<a class="rel" href="https://github.com/${REPO}/releases"><div class="h">${esc(t.allVer)} →</div></a>`;
+    }
+    paintChat();
+  }
+
+  document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+    lang = b.dataset.lang;
+    try { localStorage.setItem("cv-lang", lang); } catch (e) {}
+    render();
+  }));
+  document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+    tab = b.dataset.tab;
+    document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+    $("tab-chat").hidden = tab !== "chat";
+    $("tab-voice").hidden = tab !== "voice";
+    $("liveTag").style.visibility = tab === "chat" ? "visible" : "hidden";
+    render();
+  }));
+
+  async function load() {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=6`, { headers: { Accept: "application/vnd.github+json" } });
+      if (!r.ok) throw new Error(r.status);
+      const list = (await r.json()).filter(x => !x.draft && !x.prerelease).map(x => ({
+        version: (x.tag_name || "").replace(/^v/, ""), date: x.published_at, url: x.html_url, point: firstPoint(x.body),
+        exe: (x.assets || []).find(a => /^ChatVoice-Setup-.*\.exe$/i.test(a.name)),
+      }));
+      if (!list.length || !list[0].exe) throw new Error("no installer");
+      document.querySelectorAll("a.dl").forEach(a => { a.href = list[0].exe.browser_download_url; });
+      rels = list;
+    } catch (e) {
+      rels = false; // the buttons keep pointing at releases/latest
+    }
+    render();
+  }
+
+  // example live chat: newest on top, one message "reading" at a time
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let feed = [], n = 0;
+  function push() {
+    n++;
+    feed.unshift({ n, text: CHAT[(n - 1) % CHAT.length] });
+    feed = feed.slice(0, 5);
+  }
+  function paintChat() {
+    const t = T[lang];
+    // feed[0] is the newest (queued), feed[1] is being read, older ones are spoken
+    $("chatRows").innerHTML = feed.map((m, k) => {
+      const st = k === 0 ? `<span class="chip wait">${t.wait}</span>`
+               : k === 1 ? `<span class="chip read"><span class="wave"><span></span><span></span><span></span><span></span></span>${t.read}</span>`
+               : `<span class="chip done">${t.done}</span>`;
+      return `<tr${k === 0 ? "" : ' style="animation:none"'}><td class="n">${m.n}</td><td>Mr.JM</td><td class="msg"><span class="sub who-sm">Mr.JM</span>${esc(m.text)}</td><td>${st}</td></tr>`;
+    }).join("");
+  }
+  for (let k = 0; k < 5; k++) push();
+  if (!still) setInterval(() => { push(); paintChat(); }, 2600);
+
+  render(); load();
+})();
+</script>
+</body>
+</html>

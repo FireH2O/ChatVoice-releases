@@ -3,6 +3,8 @@
 **ChatVoice** reads your VIBIE live chat aloud in Thai. It is a small, free Windows app made for a few friends.
 
 ## Download
+**Download page: https://fireh2o.github.io/ChatVoice-releases/**
+
 Get the newest **`ChatVoice-Setup-X.Y.Z.exe`** from [Releases](https://github.com/FireH2O/ChatVoice-releases/releases/latest) and run it.
 
 - No admin needed: it installs for your user only.
